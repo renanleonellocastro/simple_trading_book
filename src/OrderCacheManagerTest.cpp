@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <stdexcept>
 
 #include "OrderCacheManager.h"
 
@@ -63,10 +64,40 @@ void testGetAllOrders()
     std::cout << "testGetAllOrders: passed" << std::endl;
 }
 
+void testCancelNonexistentOrder()
+{
+    OrderCacheManager manager;
+    Order order("order1", "sec1", "Buy", 10, "user1", "comp1");
+
+    try {
+        manager.cancelOrder("nonexistent_order");
+        assert(false);
+    } catch (const std::runtime_error& e) {
+        std::cout << "testCancelNonexistentOrder: passed" << std::endl;
+    }
+}
+
+void testAddDuplicateOrder()
+{
+    OrderCacheManager manager;
+    Order order("order1", "sec1", "Buy", 10, "user1", "comp1");
+
+    manager.addOrder(order);
+
+    try {
+        manager.addOrder(order);
+        assert(false);
+    } catch (const std::runtime_error& e) {
+        std::cout << "testAddDuplicateOrder: passed" << std::endl;
+    }
+}
+
 int main()
 {
     testAddOrder();
     testCancelOrder();
     testGetAllOrders();
+    testCancelNonexistentOrder();
+    testAddDuplicateOrder();
     return 0;
 }
