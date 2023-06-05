@@ -17,18 +17,18 @@ class Order
  Order() = default;
 
   // adding here copy constructor
- Order(const Order& other) : m_orderId(other.m_orderId), m_securityId(other.m_securityId), m_side(other.m_side),
-  m_qty(other.m_qty), m_user(other.m_user), m_company(other.m_company) { }
+ Order(const Order& other) : m_orderId(other.orderId()), m_securityId(other.securityId()), m_side(other.side()),
+  m_qty(other.qty()), m_user(other.user()), m_company(other.company()) { }
 
   // adding here atribution operator
  Order& operator=(const Order& other) {
   if (this != &other) {
-    m_orderId = other.m_orderId;
-    m_securityId = other.m_securityId;
-    m_side = other.m_side;
-    m_qty = other.m_qty;
-    m_user = other.m_user;
-    m_company = other.m_company;
+    m_orderId = other.orderId();
+    m_securityId = other.securityId();
+    m_side = other.side();
+    m_qty = other.qty();
+    m_user = other.user();
+    m_company = other.company();
   }
 
   return *this;

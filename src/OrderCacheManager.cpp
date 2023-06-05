@@ -30,7 +30,7 @@ Order OrderCacheManager::cancelOrder(const std::string& orderId)
         throw std::runtime_error(ss.str());
     }
 
-    Order order(m_orderCacheMap[orderId]);
+    Order order = m_orderCacheMap[orderId];
     m_orderCacheMap.erase(orderId);
     return order;
 }
