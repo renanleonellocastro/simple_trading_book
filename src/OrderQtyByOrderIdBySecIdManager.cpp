@@ -18,16 +18,16 @@ void OrderQtyByOrderIdBySecIdManager::addOrder(const Order& order)
 
 void OrderQtyByOrderIdBySecIdManager::cancelOrder(const Order& order)
 {
-    if (m_ordersQtyByOrderIdBySecIdMap.count(order.user()) == 0) {
+    if (m_ordersQtyByOrderIdBySecIdMap.count(order.securityId()) == 0) {
         std::stringstream ss;
-        ss << "User: " << order.user() << " does not exist in the book.";
+        ss << "SecurityID: " << order.securityId() << " does not exist in the book.";
         throw std::runtime_error(ss.str());
     }
 
-    if (m_ordersQtyByOrderIdBySecIdMap[order.user()].count(order.securityId()) == 0) {
+    if (m_ordersQtyByOrderIdBySecIdMap[order.securityId()].count(order.orderId()) == 0) {
         std::stringstream ss;
-        ss << "Security ID: " << order.securityId() <<
-            " does not exist in the book for user " << order.user() << ".";
+        ss << "Order ID: " << order.orderId() <<
+            " does not exist in the book for security ID " << order.securityId() << ".";
         throw std::runtime_error(ss.str());
     }
 

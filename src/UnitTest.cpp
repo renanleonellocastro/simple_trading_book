@@ -1,5 +1,6 @@
 #include "OrderCacheManagerTest.h"
 #include "OrdersByUserManagerTest.h"
+#include "OrderQtyByOrderIdBySecIdManagerTest.h"
 
 void testOrderCacheManager()
 {
@@ -19,9 +20,19 @@ void testOrdersByUserManager()
     OrdersByUserManagerTest::testCancelOrderThrowsIfOrderNotFound();
 }
 
+void testOrderQtyByOrderIdBySecIdManager()
+{
+    OrderQtyByOrderIdBySecIdManagerTest::testAddOrder();
+    OrderQtyByOrderIdBySecIdManagerTest::testGetOrdersForSecIdWithMinimumQty();
+    OrderQtyByOrderIdBySecIdManagerTest::testCancelOrder();
+    OrderQtyByOrderIdBySecIdManagerTest::testExceptionCaseSecIdNotExistOnBook();
+    OrderQtyByOrderIdBySecIdManagerTest::testExceptionCaseOrderIdNotExistOnBook();
+}
+
 int main()
 {
     testOrderCacheManager();
     testOrdersByUserManager();
+    testOrderQtyByOrderIdBySecIdManager();
     return 0;
 }
