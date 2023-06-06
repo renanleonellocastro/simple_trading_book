@@ -20,13 +20,13 @@ void OrdersByUserManager::cancelOrder(const Order& order)
 {
     if (m_ordersByUserMap.count(order.user()) == 0) {
         std::stringstream ss;
-        ss << "User: " << order.user() << " does not exists in the book.";
+        ss << "User: " << order.user() << " does not exist in the book.";
         throw std::runtime_error(ss.str());
     }
 
     if (m_ordersByUserMap[order.user()].count(order.orderId()) == 0) {
         std::stringstream ss;
-        ss << "Order: " << order.orderId() << " does not exists in the book.";
+        ss << "Order: " << order.orderId() << " does not exist in the book.";
         throw std::runtime_error(ss.str());
     }
 
@@ -42,7 +42,6 @@ std::vector<std::string> OrdersByUserManager::getAllUserOrders(const std::string
     std::vector<std::string> orderIds;
 
     if (m_ordersByUserMap.count(user)) {
-        std::vector<std::string> orderIds;
         const auto& orderList = m_ordersByUserMap[user];
         orderIds.reserve(m_ordersByUserMap[user].size());
 

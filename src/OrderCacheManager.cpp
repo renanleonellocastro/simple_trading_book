@@ -26,7 +26,7 @@ Order OrderCacheManager::cancelOrder(const std::string& orderId)
 {
     if (m_orderCacheMap.count(orderId) == 0) {
         std::stringstream ss;
-        ss << "Order with orderId: " << orderId << " does not exists in the book.";
+        ss << "Order with orderId: " << orderId << " does not exist in the book.";
         throw std::runtime_error(ss.str());
     }
 

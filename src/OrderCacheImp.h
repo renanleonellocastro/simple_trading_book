@@ -1,3 +1,4 @@
+#include <mutex>
 #include <vector>
 #include <unordered_map>
 
@@ -67,6 +68,7 @@ public:
     std::vector<Order> getAllOrders() const override;
 
 private:
+    mutable std::mutex m_mutex;
     OrderCacheManager m_orderCacheManager;
     OrdersByUserManager m_ordersByUserManager;
     QtyByCompanyBySecIdManager m_qtyByCompanyBySecIdManager;

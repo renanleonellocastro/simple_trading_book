@@ -59,14 +59,14 @@ void QtyByCompanyBySecIdManager::eraseOrderFromMap(std::unordered_map<std::strin
 {
     if (map.count(order.securityId()) == 0) {
         std::stringstream ss;
-        ss << "Security ID: " << order.securityId() << " does not exists in the book.";
+        ss << "Security ID: " << order.securityId() << " does not exist in the book.";
         throw std::runtime_error(ss.str());
     }
 
     if (map[order.securityId()].count(order.company()) == 0) {
         std::stringstream ss;
         ss << "Company: " << order.company() <<
-            " does not exists in the book for security ID " << order.securityId() << ".";
+            " does not exist in the book for security ID " << order.securityId() << ".";
         throw std::runtime_error(ss.str());
     }
 

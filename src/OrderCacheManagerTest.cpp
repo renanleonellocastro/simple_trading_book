@@ -1,10 +1,6 @@
-#include <cassert>
-#include <iostream>
-#include <stdexcept>
+#include "OrderCacheManagerTest.h"
 
-#include "OrderCacheManager.h"
-
-void testAddOrder()
+void OrderCacheManagerTest::testAddOrder()
 {
     OrderCacheManager manager;
     Order order1("order1", "sec1", "Buy", 10, "user1", "comp1");
@@ -22,7 +18,7 @@ void testAddOrder()
     std::cout << "testAddOrder: passed" << std::endl;
 }
 
-void testCancelOrder()
+void OrderCacheManagerTest::testCancelOrder()
 {
     OrderCacheManager manager;
     Order order1("order1", "sec1", "Buy", 10, "user1", "comp1");
@@ -42,7 +38,7 @@ void testCancelOrder()
     std::cout << "testCancelOrder: passed" << std::endl;
 }
 
-void testGetAllOrders()
+void OrderCacheManagerTest::testGetAllOrders()
 {
     OrderCacheManager manager;
     Order order1("order1", "sec1", "Buy", 10, "user1", "comp1");
@@ -64,7 +60,7 @@ void testGetAllOrders()
     std::cout << "testGetAllOrders: passed" << std::endl;
 }
 
-void testCancelNonexistentOrder()
+void OrderCacheManagerTest::testCancelNonexistentOrder()
 {
     OrderCacheManager manager;
     Order order("order1", "sec1", "Buy", 10, "user1", "comp1");
@@ -77,7 +73,7 @@ void testCancelNonexistentOrder()
     }
 }
 
-void testAddDuplicateOrder()
+void OrderCacheManagerTest::testAddDuplicateOrder()
 {
     OrderCacheManager manager;
     Order order("order1", "sec1", "Buy", 10, "user1", "comp1");
@@ -90,14 +86,4 @@ void testAddDuplicateOrder()
     } catch (const std::runtime_error& e) {
         std::cout << "testAddDuplicateOrder: passed" << std::endl;
     }
-}
-
-int main()
-{
-    testAddOrder();
-    testCancelOrder();
-    testGetAllOrders();
-    testCancelNonexistentOrder();
-    testAddDuplicateOrder();
-    return 0;
 }

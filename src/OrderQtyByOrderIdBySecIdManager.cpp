@@ -20,14 +20,14 @@ void OrderQtyByOrderIdBySecIdManager::cancelOrder(const Order& order)
 {
     if (m_ordersQtyByOrderIdBySecIdMap.count(order.user()) == 0) {
         std::stringstream ss;
-        ss << "User: " << order.user() << " does not exists in the book.";
+        ss << "User: " << order.user() << " does not exist in the book.";
         throw std::runtime_error(ss.str());
     }
 
     if (m_ordersQtyByOrderIdBySecIdMap[order.user()].count(order.securityId()) == 0) {
         std::stringstream ss;
         ss << "Security ID: " << order.securityId() <<
-            " does not exists in the book for user " << order.user() << ".";
+            " does not exist in the book for user " << order.user() << ".";
         throw std::runtime_error(ss.str());
     }
 
