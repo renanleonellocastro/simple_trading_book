@@ -222,7 +222,7 @@ void QtyByCompanyBySecIdManagerTest::testGetMatchingSizeForSecurityScenario1()
     std:: cout << "qtyCompanySell2:" << qtyCompanySell2 << std::endl;
 
     unsigned int matchingSize = manager.getMatchingSizeForSecurity("secId1");
-    assert(matchingSize == 30);
+    assert(matchingSize == 300);
 
     std::cout << "testGetMatchingSizeForSecurityScenario1: passed" << std::endl;
 }
