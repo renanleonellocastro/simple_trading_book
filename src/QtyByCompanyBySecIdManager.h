@@ -1,7 +1,9 @@
-#include <vector>
+#include <map>
+#include <set>
 #include <unordered_map>
 
 #include "OrderCache.h"
+#include "QtyByCompany.h"
 
 #pragma once
 
@@ -55,6 +57,11 @@ public:
 private:
     void eraseOrderFromMap(std::unordered_map<std::string, std::unordered_map<std::string,
         unsigned int>>& map, const Order& order);
+
+    std::multiset<QtyByCompany> getMultisetFromMap(const std::unordered_map<std::string, std::uint32_t>& map);
+    
+    void greedyRecursiveAlgorithmToGetMaximumMatches(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
+        std::multiset<QtyByCompany>& sellQtyByCompanyMultiset, unsigned int& matches);
 
 private:
     std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>> m_buyQtyByCompanyBySecIdMap;

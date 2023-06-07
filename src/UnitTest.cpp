@@ -1,5 +1,6 @@
 #include "OrderCacheManagerTest.h"
 #include "OrdersByUserManagerTest.h"
+#include "QtyByCompanyBySecIdManagerTest.h"
 #include "OrderQtyByOrderIdBySecIdManagerTest.h"
 
 void testOrderCacheManager()
@@ -29,10 +30,25 @@ void testOrderQtyByOrderIdBySecIdManager()
     OrderQtyByOrderIdBySecIdManagerTest::testExceptionCaseOrderIdNotExistOnBook();
 }
 
+void testQtyByCompanyBySecIdManagerTest()
+{
+    QtyByCompanyBySecIdManagerTest::testAddOrder();
+    QtyByCompanyBySecIdManagerTest::testCancelOrder();
+    QtyByCompanyBySecIdManagerTest::testGetMatchingSizeForSecurity1();
+    QtyByCompanyBySecIdManagerTest::testGetMatchingSizeForSecurity2();
+    QtyByCompanyBySecIdManagerTest::testExceptionCaseInvalidOrderSideOnAddOrder();
+    QtyByCompanyBySecIdManagerTest::testExceptionCaseInvalidOrderSideOnCancelOrder();
+    QtyByCompanyBySecIdManagerTest::testExceptionCaseSecIdNotExistOnBook();
+    QtyByCompanyBySecIdManagerTest::testExceptionCaseCompanyNotExistOnBook();
+    QtyByCompanyBySecIdManagerTest::testGetMatchingSizeForSecurityScenarios();
+}
+
 int main()
 {
     testOrderCacheManager();
     testOrdersByUserManager();
     testOrderQtyByOrderIdBySecIdManager();
+    testQtyByCompanyBySecIdManagerTest();
+    std::cout << "ALL TESTS HAVE PASSED!" << std::endl;
     return 0;
 }

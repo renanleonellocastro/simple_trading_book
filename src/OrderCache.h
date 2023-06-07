@@ -42,6 +42,10 @@ class Order
   std::string company() const    { return m_company; }
   unsigned int qty() const       { return m_qty; }
   
+  // adding toString to help debugging
+  std::string toString() const { return orderId() + ":" + securityId() + ":" +
+   side() + ":" + user() + ":" + company() + ":" + std::to_string(qty());}
+
  private:
   
   // use the below to hold the order data
