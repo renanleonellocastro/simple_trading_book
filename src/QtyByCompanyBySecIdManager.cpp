@@ -92,24 +92,53 @@ void QtyByCompanyBySecIdManager::greedyRecursiveAlgorithmToGetMaximumMatches(std
     QtyByCompany>& buyQtyByCompanyMultiset, std::multiset<QtyByCompany>& sellQtyByCompanyMultiset,
     unsigned int& matches)
 {
-    // stop recursion criteria
+    if (shouldStopRecursion(buyQtyByCompanyMultiset, sellQtyByCompanyMultiset)) {
+        return;
+    }
+
+    auto lastMatchableIteratorTuple = getLastMatchableIterator(buyQtyByCompanyMultiset,
+        sellQtyByCompanyMultiset);
+
+    unsigned int match = getMatchSizeAndUpdateTotalMatches(lastMatchableIteratorTuple, matches);
+
+    auto updatedQuantitiesElementTuple = getUpdatedQuantityElements(lastMatchableIteratorTuple, match);
+
+    updateQtyByCompanyMultiset(sellQtyByCompanyMultiset, std::get<0>(lastMatchableIteratorTuple),
+        std::get<0>(updatedQuantitiesElementTuple));
+    
+    updateQtyByCompanyMultiset(buyQtyByCompanyMultiset, std::get<1>(lastMatchableIteratorTuple),
+        std::get<1>(updatedQuantitiesElementTuple));
+
+    return greedyRecursiveAlgorithmToGetMaximumMatches(buyQtyByCompanyMultiset, sellQtyByCompanyMultiset, matches);
+}
+
+bool QtyByCompanyBySecIdManager::shouldStopRecursion(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
+    std::multiset<QtyByCompany>& sellQtyByCompanyMultiset)
+{
     if ((buyQtyByCompanyMultiset.size() <= 1) && (sellQtyByCompanyMultiset.size() <= 1)) {
         if ((buyQtyByCompanyMultiset.size() == 1) && (sellQtyByCompanyMultiset.size() == 1)) {
             auto sellIterator = sellQtyByCompanyMultiset.begin();
             auto buyIterator = buyQtyByCompanyMultiset.begin();
 
             if (buyIterator->company == sellIterator->company) {
-                return;
+                return true;
             }
         } else {
-            return; 
+            return true; 
         }
     }
 
     if ((buyQtyByCompanyMultiset.size() == 0) || (sellQtyByCompanyMultiset.size() == 0)) {
-        return; 
+        return true; 
     }
 
+    return false;
+}
+
+std::tuple<std::multiset<QtyByCompany>::reverse_iterator, std::multiset<QtyByCompany>::reverse_iterator> 
+    QtyByCompanyBySecIdManager::getLastMatchableIterator(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
+    std::multiset<QtyByCompany>& sellQtyByCompanyMultiset)
+{
     // the last, in std::multiset, means the highest qty
     auto lastMatchableSellElementIterator = sellQtyByCompanyMultiset.rbegin();
     auto lastMatchableBuyElementIterator = buyQtyByCompanyMultiset.rbegin();
@@ -123,30 +152,46 @@ void QtyByCompanyBySecIdManager::greedyRecursiveAlgorithmToGetMaximumMatches(std
             }
         }
     }
+    return std::tuple(lastMatchableSellElementIterator, lastMatchableBuyElementIterator);
+}
 
-    QtyByCompany lastMatchableSellElement(lastMatchableSellElementIterator->company,
-        lastMatchableSellElementIterator->quantity);
-    QtyByCompany lastMatchableBuyElement(lastMatchableBuyElementIterator->company,
+unsigned int QtyByCompanyBySecIdManager::getMatchSizeAndUpdateTotalMatches(std::tuple<
+    std::multiset<QtyByCompany>::reverse_iterator, std::multiset<QtyByCompany>::
+    reverse_iterator>& lastMatchableTuple, unsigned int& matches)
+{
+    auto lastMatchableSellElementIterator = std::get<0>(lastMatchableTuple);
+    auto lastMatchableBuyElementIterator = std::get<1>(lastMatchableTuple);
+
+    unsigned int match = std::min(lastMatchableSellElementIterator->quantity,
         lastMatchableBuyElementIterator->quantity);
-    sellQtyByCompanyMultiset.erase(--lastMatchableSellElementIterator.base());
-    buyQtyByCompanyMultiset.erase(--lastMatchableBuyElementIterator.base());
-
-    unsigned int match = std::min(lastMatchableSellElement.quantity, lastMatchableBuyElement.quantity);
     matches += match;
-    std::cout << "Match: Qty: " << match << std::endl;
-    std::cout << "Sell:" << lastMatchableSellElement.company << ":" << lastMatchableSellElement.quantity << std::endl;
-    std::cout << "Buy:" << lastMatchableBuyElement.company << ":" << lastMatchableBuyElement.quantity << std::endl;
 
-    lastMatchableSellElement.quantity -= match;
-    lastMatchableBuyElement.quantity -= match;
+    return match;
+}
 
-    if (lastMatchableSellElement.quantity != 0) {
-        sellQtyByCompanyMultiset.insert(lastMatchableSellElement);
+std::tuple<QtyByCompany, QtyByCompany> QtyByCompanyBySecIdManager::getUpdatedQuantityElements(
+    std::tuple<std::multiset<QtyByCompany>::reverse_iterator, std::multiset<QtyByCompany>::
+    reverse_iterator>& lastMatchableTuple, unsigned int matchSize)
+{
+    QtyByCompany lastMatchableSellElement(std::get<0>(lastMatchableTuple)->company,
+        std::get<0>(lastMatchableTuple)->quantity);
+
+    QtyByCompany lastMatchableBuyElement(std::get<1>(lastMatchableTuple)->company,
+        std::get<1>(lastMatchableTuple)->quantity);
+
+    lastMatchableSellElement.quantity -= matchSize;
+    lastMatchableBuyElement.quantity -= matchSize;
+
+    return std::make_tuple(lastMatchableSellElement, lastMatchableBuyElement);
+}
+
+void QtyByCompanyBySecIdManager::updateQtyByCompanyMultiset(std::multiset<QtyByCompany>&
+    qtyByCompanyMultiset, std::multiset<QtyByCompany>::reverse_iterator&
+    lastMatchableIterator, QtyByCompany& updatedQuantityElement)
+{
+    qtyByCompanyMultiset.erase(--lastMatchableIterator.base());
+
+    if (updatedQuantityElement.quantity != 0) {
+        qtyByCompanyMultiset.insert(updatedQuantityElement);
     }
-
-    if (lastMatchableBuyElement.quantity != 0) {
-        buyQtyByCompanyMultiset.insert(lastMatchableBuyElement);
-    }
-
-    return greedyRecursiveAlgorithmToGetMaximumMatches(buyQtyByCompanyMultiset, sellQtyByCompanyMultiset, matches);
 }

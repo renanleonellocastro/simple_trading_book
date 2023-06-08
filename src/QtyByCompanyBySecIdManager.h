@@ -62,6 +62,25 @@ private:
     
     void greedyRecursiveAlgorithmToGetMaximumMatches(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
         std::multiset<QtyByCompany>& sellQtyByCompanyMultiset, unsigned int& matches);
+    
+    bool shouldStopRecursion(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
+        std::multiset<QtyByCompany>& sellQtyByCompanyMultiset);
+
+    std::tuple<std::multiset<QtyByCompany>::reverse_iterator, std::multiset<QtyByCompany>::reverse_iterator> 
+        getLastMatchableIterator(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
+        std::multiset<QtyByCompany>& sellQtyByCompanyMultiset);
+    
+    unsigned int getMatchSizeAndUpdateTotalMatches(std::tuple<std::multiset<QtyByCompany>::
+        reverse_iterator, std::multiset<QtyByCompany>::reverse_iterator>& lastMatchableTuple,
+        unsigned int& matches);
+
+    std::tuple<QtyByCompany, QtyByCompany> getUpdatedQuantityElements(std::tuple<std::multiset<
+        QtyByCompany>::reverse_iterator, std::multiset<QtyByCompany>::reverse_iterator>& lastMatchableTuple,
+        unsigned int matchSize);
+    
+    void updateQtyByCompanyMultiset(std::multiset<QtyByCompany>& qtyByCompanyMultiset,
+        std::multiset<QtyByCompany>::reverse_iterator& lastMatchableIterator,
+        QtyByCompany& updatedQuantityElement);
 
 private:
     std::unordered_map<std::string, std::unordered_map<std::string, unsigned int>> m_buyQtyByCompanyBySecIdMap;
