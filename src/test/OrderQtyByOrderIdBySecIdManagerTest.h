@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "OrderQtyByOrderIdBySecIdManager.h"
+#include "../OrderQtyByOrderIdBySecIdManager.h"
 
 #pragma once
 

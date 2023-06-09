@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "QtyByCompanyBySecIdManager.h"
+#include "../QtyByCompanyBySecIdManager.h"
 
 #pragma once
 
