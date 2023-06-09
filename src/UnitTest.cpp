@@ -52,6 +52,13 @@ void testOrderCacheImp()
     OrderCacheImpTest::testCancelOrdersForSecIdWithMinimumQty();
     OrderCacheImpTest::testGetMatchingSizeForSecurity();
     OrderCacheImpTest::testGetAllOrders();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample1();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample2();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample3();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample4();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample5();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample6();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample7();
 }
 
 int main()
