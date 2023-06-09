@@ -115,16 +115,9 @@ void QtyByCompanyBySecIdManager::greedyRecursiveAlgorithmToGetMaximumMatches(std
 bool QtyByCompanyBySecIdManager::shouldStopRecursion(std::multiset<QtyByCompany>& buyQtyByCompanyMultiset,
     std::multiset<QtyByCompany>& sellQtyByCompanyMultiset)
 {
-    if ((buyQtyByCompanyMultiset.size() <= 1) && (sellQtyByCompanyMultiset.size() <= 1)) {
-        if ((buyQtyByCompanyMultiset.size() == 1) && (sellQtyByCompanyMultiset.size() == 1)) {
-            auto sellIterator = sellQtyByCompanyMultiset.begin();
-            auto buyIterator = buyQtyByCompanyMultiset.begin();
-
-            if (buyIterator->company == sellIterator->company) {
-                return true;
-            }
-        } else {
-            return true; 
+    if ((buyQtyByCompanyMultiset.size() == 1) && (sellQtyByCompanyMultiset.size() == 1)) {
+        if (buyQtyByCompanyMultiset.begin()->company == sellQtyByCompanyMultiset.begin()->company) {
+            return true;
         }
     }
 

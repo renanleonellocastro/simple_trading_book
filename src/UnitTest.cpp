@@ -1,3 +1,4 @@
+#include "OrderCacheImpTest.h"
 #include "OrderCacheManagerTest.h"
 #include "OrdersByUserManagerTest.h"
 #include "QtyByCompanyBySecIdManagerTest.h"
@@ -30,7 +31,7 @@ void testOrderQtyByOrderIdBySecIdManager()
     OrderQtyByOrderIdBySecIdManagerTest::testExceptionCaseOrderIdNotExistOnBook();
 }
 
-void testQtyByCompanyBySecIdManagerTest()
+void testQtyByCompanyBySecIdManager()
 {
     QtyByCompanyBySecIdManagerTest::testAddOrder();
     QtyByCompanyBySecIdManagerTest::testCancelOrder();
@@ -43,12 +44,23 @@ void testQtyByCompanyBySecIdManagerTest()
     QtyByCompanyBySecIdManagerTest::testGetMatchingSizeForSecurityScenarios();
 }
 
+void testOrderCacheImp()
+{
+    OrderCacheImpTest::testAddOrder();
+    OrderCacheImpTest::testCancelOrder();
+    OrderCacheImpTest::testCancelOrdersForUser();
+    OrderCacheImpTest::testCancelOrdersForSecIdWithMinimumQty();
+    OrderCacheImpTest::testGetMatchingSizeForSecurity();
+    OrderCacheImpTest::testGetAllOrders();
+}
+
 int main()
 {
     testOrderCacheManager();
     testOrdersByUserManager();
     testOrderQtyByOrderIdBySecIdManager();
-    testQtyByCompanyBySecIdManagerTest();
+    testQtyByCompanyBySecIdManager();
+    testOrderCacheImp();
     std::cout << "ALL TESTS HAVE PASSED!" << std::endl;
     return 0;
 }
