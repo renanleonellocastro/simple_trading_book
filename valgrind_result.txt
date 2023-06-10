@@ -1,0 +1,60 @@
+==28161== Memcheck, a memory error detector
+==28161== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==28161== Using Valgrind-3.16.1 and LibVEX; rerun with -h for copyright info
+==28161== Command: ./unittest
+==28161== 
+testAddOrder: passed
+testCancelOrder: passed
+testGetAllOrders: passed
+testCancelNonexistentOrder: passed
+testAddDuplicateOrder: passed
+testAddOrder: passed
+testCancelOrder: passed
+testGetAllUserOrders: passed
+testCancelOrderThrowsIfUserNotFound: passed
+testCancelOrderThrowsIfOrderNotFound: passed
+testAddOrder: passed
+testGetOrdersForSecIdWithMinimumQty: passed
+testCancelOrder: passed
+testExceptionCaseSecIdNotExistOnBook: passed
+testExceptionCaseOrderIdNotExistOnBook: passed
+testAddOrder: passed
+testCancelOrder: passed
+testGetMatchingSizeForSecurity1: passed
+testGetMatchingSizeForSecurity2: passed
+testExceptionCaseInvalidOrderSideOnAddOrder: passed
+testExceptionCaseInvalidOrderSideOnCancelOrder: passed
+testExceptionCaseSecIdNotExistOnBook: passed
+testExceptionCaseCompanyNotExistOnBook: passed
+testGetMatchingSizeForSecurityScenario1: passed
+testGetMatchingSizeForSecurityScenario2: passed
+testGetMatchingSizeForSecurityScenario3: passed
+testAddOrder: passed
+testCancelOrder: passed
+testCancelOrdersForUser: passed
+testCancelOrdersForSecIdWith: passed
+testGetMatchingSizeForSecurity: passed
+testGetAllOrders: passed
+testMultiThreadScenario: passed
+testGetMatchingSizeForSecurityExample1: Passed
+testGetMatchingSizeForSecurityExample2: Passed
+testGetMatchingSizeForSecurityExample3: Passed
+testGetMatchingSizeForSecurityExample4: Passed
+testGetMatchingSizeForSecurityExample5: Passed
+testGetMatchingSizeForSecurityExample6: Passed
+testGetMatchingSizeForSecurityExample7: Passed
+testGetMatchingSizeForSecurityExample8: Passed
+testGetMatchingSizeForSecurityExample9: Passed
+testGetMatchingSizeForSecurityExample10: Passed
+testGetMatchingSizeForSecurityExample11: Passed
+testGetMatchingSizeForSecurityExample12: Passed
+testGetMatchingSizeForSecurityExample13: Passed
+ALL TESTS HAVE PASSED!
+==28161== 
+==28161== HEAP SUMMARY:
+==28161==     in use at exit: 0 bytes in 0 blocks
+==28161==   total heap usage: 1,949,099 allocs, 1,949,099 frees, 216,350,650 bytes allocated
+==28161== 
+==28161== All heap blocks were freed -- no leaks are possible
+==28161== 
+==28161== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -52,6 +52,7 @@ void testOrderCacheImp()
     OrderCacheImpTest::testCancelOrdersForSecIdWithMinimumQty();
     OrderCacheImpTest::testGetMatchingSizeForSecurity();
     OrderCacheImpTest::testGetAllOrders();
+    OrderCacheImpTest::testMultiThreadScenario();
     OrderCacheImpTest::testGetMatchingSizeForSecurityExample1();
     OrderCacheImpTest::testGetMatchingSizeForSecurityExample2();
     OrderCacheImpTest::testGetMatchingSizeForSecurityExample3();

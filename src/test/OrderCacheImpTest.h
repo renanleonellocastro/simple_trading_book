@@ -15,6 +15,7 @@ public:
     static void testCancelOrdersForSecIdWithMinimumQty();
     static void testGetMatchingSizeForSecurity();
     static void testGetAllOrders();
+    static void testMultiThreadScenario();
     static void testGetMatchingSizeForSecurityExample1();
     static void testGetMatchingSizeForSecurityExample2();
     static void testGetMatchingSizeForSecurityExample3();
@@ -28,4 +29,9 @@ public:
     static void testGetMatchingSizeForSecurityExample11();
     static void testGetMatchingSizeForSecurityExample12();
     static void testGetMatchingSizeForSecurityExample13();
+
+private:
+    static void thread1Function(OrderCacheImp& orderCache);
+    static void thread2Function(OrderCacheImp& orderCache);
+    static void thread3Function(OrderCacheImp& orderCache);
 };

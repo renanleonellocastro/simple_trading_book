@@ -38,7 +38,7 @@ void OrderQtyByOrderIdBySecIdManager::cancelOrder(const Order& order)
     }
 }
 
-std::vector<std::string>  OrderQtyByOrderIdBySecIdManager::getOrdersForSecIdWithMinimumQty
+std::vector<std::string> OrderQtyByOrderIdBySecIdManager::getOrdersForSecIdWithMinimumQty
     (const std::string& securityId, unsigned int minQty)
 {
     std::vector<std::string> ordersIdsForSecIdWithMinimumQty;

@@ -1,3 +1,4 @@
+#include <thread>
 #include <algorithm>
 
 #include "OrderCacheImpTest.h"
@@ -89,6 +90,23 @@ void OrderCacheImpTest::testGetAllOrders()
     assert(orderCache.getAllOrders().size() == 3);
 
     std::cout << "testGetAllOrders: passed" << std::endl;
+}
+
+void OrderCacheImpTest::testMultiThreadScenario()
+{
+    OrderCacheImp orderCache;
+    std::thread thread1(OrderCacheImpTest::thread1Function, std::ref(orderCache));
+    std::thread thread2(OrderCacheImpTest::thread2Function, std::ref(orderCache));
+    std::thread thread3(OrderCacheImpTest::thread3Function, std::ref(orderCache));
+
+    thread1.join();
+    thread2.join();
+    thread3.join();
+
+    assert(orderCache.getAllOrders().size() == 6);
+    assert(orderCache.getMatchingSizeForSecurity("secId1") == 300);
+
+    std::cout << "testMultiThreadScenario: passed" << std::endl;
 }
 
 void OrderCacheImpTest::testGetMatchingSizeForSecurityExample1()
@@ -320,4 +338,55 @@ void OrderCacheImpTest::testGetMatchingSizeForSecurityExample13()
     assert(orderCache.getMatchingSizeForSecurity("SecId1") == 0);
 
     std::cout << "testGetMatchingSizeForSecurityExample13: Passed" << std::endl;
+}
+
+void OrderCacheImpTest::thread1Function(OrderCacheImp& orderCache)
+{
+    orderCache.addOrder(Order("Order1", "secId1", "Buy", 100, "user1", "company1"));
+    orderCache.addOrder(Order("Order2", "secId1", "Sell", 200, "user2", "company2"));
+    orderCache.addOrder(Order("Order3", "secId1", "Sell", 300, "user3", "company3"));
+    orderCache.addOrder(Order("Order4", "secId1", "Buy", 100, "user4", "company5"));
+    orderCache.addOrder(Order("Order5", "secId1", "Sell", 200, "user4", "company5"));
+    orderCache.addOrder(Order("Order6", "secId2", "Buy", 300, "user4", "company5"));
+    orderCache.addOrder(Order("Order7", "secId1", "Buy", 1000, "user5", "company5"));
+    orderCache.addOrder(Order("Order8", "secId1", "Sell", 2000, "user5", "company5"));
+    orderCache.addOrder(Order("Order9", "secId1", "Buy", 3000, "user5", "company5"));
+
+    orderCache.cancelOrder("Order2");
+    orderCache.cancelOrdersForUser("user4");
+    orderCache.cancelOrdersForSecIdWithMinimumQty("secId1", 1000);
+}
+
+void OrderCacheImpTest::thread2Function(OrderCacheImp& orderCache)
+{
+    orderCache.addOrder(Order("Order10", "secId1", "Buy", 100, "user1", "company10"));
+    orderCache.addOrder(Order("Order11", "secId1", "Sell", 200, "user2", "company2"));
+    orderCache.addOrder(Order("Order12", "secId1", "Sell", 300, "user3", "company20"));
+    orderCache.addOrder(Order("Order13", "secId1", "Buy", 100, "user4", "company5"));
+    orderCache.addOrder(Order("Order14", "secId1", "Sell", 200, "user4", "company5"));
+    orderCache.addOrder(Order("Order15", "secId2", "Buy", 300, "user4", "company5"));
+    orderCache.addOrder(Order("Order16", "secId1", "Buy", 1000, "user5", "company5"));
+    orderCache.addOrder(Order("Order17", "secId1", "Sell", 2000, "user5", "company5"));
+    orderCache.addOrder(Order("Order18", "secId1", "Buy", 3000, "user5", "company5"));
+
+    orderCache.cancelOrder("Order11");
+    orderCache.cancelOrdersForUser("user4");
+    orderCache.cancelOrdersForSecIdWithMinimumQty("secId1", 1000);
+}
+
+void OrderCacheImpTest::thread3Function(OrderCacheImp& orderCache)
+{
+    orderCache.addOrder(Order("Order20", "secId1", "Buy", 100, "user1", "company30"));
+    orderCache.addOrder(Order("Order21", "secId1", "Sell", 200, "user2", "company2"));
+    orderCache.addOrder(Order("Order22", "secId1", "Sell", 300, "user3", "company40"));
+    orderCache.addOrder(Order("Order23", "secId1", "Buy", 100, "user4", "company5"));
+    orderCache.addOrder(Order("Order24", "secId1", "Sell", 200, "user4", "company5"));
+    orderCache.addOrder(Order("Order25", "secId2", "Buy", 300, "user4", "company5"));
+    orderCache.addOrder(Order("Order26", "secId1", "Buy", 1000, "user5", "company5"));
+    orderCache.addOrder(Order("Order27", "secId1", "Sell", 2000, "user5", "company5"));
+    orderCache.addOrder(Order("Order28", "secId1", "Buy", 3000, "user5", "company5"));
+
+    orderCache.cancelOrder("Order21");
+    orderCache.cancelOrdersForUser("user4");
+    orderCache.cancelOrdersForSecIdWithMinimumQty("secId1", 1000);
 }

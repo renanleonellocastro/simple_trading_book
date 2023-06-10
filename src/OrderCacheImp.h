@@ -68,6 +68,9 @@ public:
     std::vector<Order> getAllOrders() const override;
 
 private:
+    void cancelOrderFromAllBuffers(const std::string& orderId);
+
+private:
     mutable std::mutex m_mutex;
     OrderCacheManager m_orderCacheManager;
     OrdersByUserManager m_ordersByUserManager;
