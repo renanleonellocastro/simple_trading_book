@@ -59,6 +59,9 @@ void testOrderCacheImp()
     OrderCacheImpTest::testGetMatchingSizeForSecurityExample5();
     OrderCacheImpTest::testGetMatchingSizeForSecurityExample6();
     OrderCacheImpTest::testGetMatchingSizeForSecurityExample7();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample8();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample9();
+    OrderCacheImpTest::testGetMatchingSizeForSecurityExample10();
 }
 
 int main()

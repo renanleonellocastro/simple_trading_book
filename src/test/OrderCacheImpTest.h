@@ -22,4 +22,7 @@ public:
     static void testGetMatchingSizeForSecurityExample5();
     static void testGetMatchingSizeForSecurityExample6();
     static void testGetMatchingSizeForSecurityExample7();
+    static void testGetMatchingSizeForSecurityExample8();
+    static void testGetMatchingSizeForSecurityExample9();
+    static void testGetMatchingSizeForSecurityExample10();
 };

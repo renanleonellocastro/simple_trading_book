@@ -207,3 +207,61 @@ void OrderCacheImpTest::testGetMatchingSizeForSecurityExample7()
 
     std::cout << "testGetMatchingSizeForSecurityExample7: Passed" << std::endl;
 }
+
+void OrderCacheImpTest::testGetMatchingSizeForSecurityExample8()
+{
+    OrderCacheImp orderCache;
+
+    for (int i = 1; i <= 50000; ++i) {
+        orderCache.addOrder(Order("OrdIdBuy" + std::to_string(i), "SecId1", "Buy", i, "User1",
+            "Company" + std::to_string(i)));
+        orderCache.addOrder(Order("OrdIdSell" + std::to_string(i), "SecId1", "Sell", i, "User1",
+            "Company" + std::to_string(i)));
+    }
+
+    assert(orderCache.getMatchingSizeForSecurity("SecId1") == 1250025000);
+
+    std::cout << "testGetMatchingSizeForSecurityExample8: Passed" << std::endl;
+}
+
+void OrderCacheImpTest::testGetMatchingSizeForSecurityExample9()
+{
+    OrderCacheImp orderCache;
+
+    for (int i = 1; i <= 100000; ++i) {
+        orderCache.addOrder(Order("OrdIdBuy" + std::to_string(i), "SecId1", "Buy", 1, "User1",
+            "Company" + std::to_string(i)));
+        orderCache.addOrder(Order("OrdIdSell" + std::to_string(i), "SecId1", "Sell", 1, "User1",
+            "Company" + std::to_string(i)));
+    }
+
+    assert(orderCache.getMatchingSizeForSecurity("SecId1") == 100000);
+
+    std::cout << "testGetMatchingSizeForSecurityExample9: Passed" << std::endl;
+}
+
+void OrderCacheImpTest::testGetMatchingSizeForSecurityExample10()
+{
+    OrderCacheImp orderCache;
+
+    for (int i = 1; i <= 10000; ++i) {
+        orderCache.addOrder(Order("OrdIdBuy" + std::to_string(i), "SecId1", "Buy", i, "User1",
+            "Company" + std::to_string(i)));
+        orderCache.addOrder(Order("OrdIdSell" + std::to_string(i), "SecId1", "Sell", i, "User1",
+            "Company" + std::to_string(i)));
+    }
+
+    try {
+        orderCache.addOrder(Order("OrdIdBuy5000", "SecId2", "Buy", 51, "User124712847",
+            "Company12491289"));
+    } catch (const std::runtime_error& error) {
+        assert(std::string(error.what()) == "Order with orderId: OrdIdBuy5000 already exists in the book.");
+    }
+
+    orderCache.addOrder(Order("OrdIdBuy10001", "SecId1", "Buy", 50000, "User1",
+        "Company1"));
+
+    assert(orderCache.getMatchingSizeForSecurity("SecId1") == 50005000);
+
+    std::cout << "testGetMatchingSizeForSecurityExample10: Passed" << std::endl;
+}

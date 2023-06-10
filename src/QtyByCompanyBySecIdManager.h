@@ -76,8 +76,8 @@ private:
     std::multiset<QtyByCompany> getMultisetFromMap(const std::unordered_map<std::string, std::uint32_t>& map);
 
     /**
-     * @brief Implements a tail recursive greedy algorithm to find maximum matches.
-     * This function implements a recursive greedy algorithm to find the maximum
+     * @brief Implements a greedy algorithm to find maximum matches.
+     * This function implements a greedy algorithm to find the maximum
      * matches between buy and sell orders in the multiset representation.
      * @param buyQtyByCompanyMultiset The multiset of buy orders.
      * @param sellQtyByCompanyMultiset The multiset of sell orders.
