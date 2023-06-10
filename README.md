@@ -1,134 +1,57 @@
-Read Me:
- 
-  - Your task is to implement an in-memory cache of order objects that supports 
-    adding new orders, removing existing orders and matching buy and sell orders. 
-		- On "order" is a request to buy or sell a financial security (eg. bond, stock, 
-		  commodity, etc.)
-		- Each order is uniquely identified by an order id
-		- Each security has a different security id 
-		- Order matching occurs for orders with the same security id, different side (buy or sell),
-		  and different company (company of person who requested the order)
- 
-  - Provide an implementation for the OrderCacheInterface class in OrderCache.h 
-    - An Order class is provided for you:
-       - This class holds basic order info
-       - Do not remove the provided member variables and methods in the Order class
-       - You may add additional members if you like
-       - For your implementation of OrderCacheInterface:
-            - Write a class that derives OrderCacheInterface
-            - Choose appropriate data structure(s) to hold Order objects and any additional data you'd like            
-            - Implement the following methods (do not change their signatures)
-                - addOrder()
-                - cancelOrder()
-                - cancelOrdersForUser()
-                - cancelOrdersForSecIdWithMinimumQty()
-			    - getMatchingSizeForSecurity()
-                - getAllOrders()
-            - Add any additional methods and variables you'd like to your class
-            
-  - There are more comments in OrderCache.h to provide additional guidance
+# Trade Book - In-Memory Order Cache
 
-  - Submit all files as email attachments or as .zip file. You do not need to submit 
-    a main() or an executable. We will build an exeutable using your submitted 
-    code for implementing the OrderCacheInterface class to run tests  
+This project is an implementation of an in-memory trade book that manages orders and provides various operations on the orders. It includes a class called `OrderCacheImp` that implements the `OrderCacheInterface`, which defines the interface for interacting with the order cache.
 
-  - You do not need to submit any test cases in your code or any test results. Though 
-    I highly recommend you run various tests yourself for verification    
+## OrderCacheInterface
 
-  - Use up to C++17. Your code must compile. Code should be platform agnostic.
+The `OrderCacheInterface` is an abstract class that defines the following methods:
 
-  - Single-threaded support is sufficient. Adding thread safety is not necessary but
-    would be viewed as extra credit.  
-  
-  - Order matching rules for getMatchingSizeForSecurity()
-        - Your implementation of getMatchingSizeForSecurity() should give the total qty that can match for a security id
-        - Can only match orders with the same security id
-        - Can only match a Buy order with a Sell order
-        - Buy order can match against multiple Sell orders (and vice versa)
-            - eg a security id "ABCD" has 
-                Buy  order with qty 10000
-                Sell order with qty  2000
-                Sell order with qty  1000               
-            - security id "ABCD" has a total match of 3000. The Buy order's qty is big enough
-              to match against both Sell orders and still has 7000 remaining
-        - Any order quantity already allocated to a match cannot be reused as a match 
-          against a differnt order (eg the qty 3000 matched above for security id "ABCD" example)
-        - Some orders may not match entirely or at all 
-        - Users in the same company cannot match against each other
-   
-   
-  - Order matching example and explanation
-        - Example set of orders added using addOrder()
-            OrdId1 SecId1 Buy  1000 User1 CompanyA
-            OrdId2 SecId2 Sell 3000 User2 CompanyB
-            OrdId3 SecId1 Sell  500 User3 CompanyA
-            OrdId4 SecId2 Buy   600 User4 CompanyC
-            OrdId5 SecId2 Buy   100 User5 CompanyB
-            OrdId6 SecId3 Buy  1000 User6 CompanyD
-            OrdId7 SecId2 Buy  2000 User7 CompanyE
-            OrdId8 SecId2 Sell 5000 User8 CompanyE        
-        - Explanation
-            - SecId1
-                - SecId1 has 1 Buy order and 1 Sell order
-                - Both orders are for users in CompanyA so they are not allowed to match
-                - There are no matches for SecId1
-            - SecId2
-                - OrdId2 matches quantity  600 against OrdId4 
-                - OrdId2 matches quantity 2000 against OrdId7 
-                - OrdId2 has a total matched quantity of 2600
-                - OrdId8 matches quantity 100 against OrdId5 only
-                    - OrdId8 has a remaining qty of 4900
-                - OrdId4 had its quantity fully allocated to match OrdId2
-                    - No remaining qty on OrdId4 for the remaining 4900 of OrdId8
-                - Total quantity matched for SecId2 is 2700.  (2600 + 100) 
-                - Note: there are other combinations of matches among the orders which
-                  would lead to the same result of 2700 total qty matching
-       - SecId3 has only one Buy order, no other orders to match against
+<pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>cpp</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-cpp">class OrderCacheInterface
+{
+public:
+    virtual void addOrder(Order order) = 0;
+    virtual void cancelOrder(const std::string& orderId) = 0;
+    virtual void cancelOrdersForUser(const std::string& user) = 0;
+    virtual void cancelOrdersForSecIdWithMinimumQty(const std::string& securityId, unsigned int minQty) = 0;
+    virtual unsigned int getMatchingSizeForSecurity(const std::string& securityId) = 0;
+    virtual std::vector<Order> getAllOrders() const = 0;
+};
+</code></div></div></pre>
 
+These methods allow adding orders, cancelling orders by ID, cancelling orders by user, cancelling orders by security ID with a minimum quantity, retrieving the matching size for a security ID, and getting all orders in the cache.
 
-  - More Examples
+## OrderCacheImp
 
-    - Example 1:
+The `OrderCacheImp` class is an implementation of the `OrderCacheInterface`. It provides an in-memory cache of order objects and supports various operations on the orders.
 
-        Orders in cache:
-            OrdId1 SecId1 Sell 100 User10 Company2
-            OrdId2 SecId3 Sell 200 User8 Company2
-            OrdId3 SecId1 Buy 300 User13 Company2
-            OrdId4 SecId2 Sell 400 User12 Company2
-            OrdId5 SecId3 Sell 500 User7 Company2
-            OrdId6 SecId3 Buy 600 User3 Company1
-            OrdId7 SecId1 Sell 700 User10 Company2
-            OrdId8 SecId1 Sell 800 User2 Company1
-            OrdId9 SecId2 Buy 900 User6 Company2
-            OrdId10 SecId2 Sell 1000 User5 Company1
-            OrdId11 SecId1 Sell 1100 User13 Company2
-            OrdId12 SecId2 Buy 1200 User9 Company2
-            OrdId13 SecId1 Sell 1300 User1 Company
+### Features and Highlights
 
-        Total qty matching for security ids:
-            SecId1 300
-            SecId2 1000
-            SecId3 600
+* **Multi-thread Consumer Support** : The implementation supports multiple threads consuming the order cache concurrently by utilizing a mutex to ensure thread safety.
+* **Platform and Compilation** : The code was developed in a Linux environment and compiled using `g++` with C++17 support. The project includes a Makefile for easy compilation.
 
+### Compilation and Unit Tests
 
-    - Example 2:
+To compile the project and run the unit tests, follow these steps:
 
-        Orders in cache:
-            OrdId1 SecId3 Sell 100 User1 Company1
-            OrdId2 SecId3 Sell 200 User3 Company2
-            OrdId3 SecId1 Buy 300 User2 Company1
-            OrdId4 SecId3 Sell 400 User5 Company2
-            OrdId5 SecId2 Sell 500 User2 Company1
-            OrdId6 SecId2 Buy 600 User3 Company2
-            OrdId7 SecId2 Sell 700 User1 Company1
-            OrdId8 SecId1 Sell 800 User2 Company1
-            OrdId9 SecId1 Buy 900 User5 Company2
-            OrdId10 SecId1 Sell 1000 User1 Company1
-            OrdId11 SecId2 Sell 1100 User6 Company2
+1. Make sure you have `g++` and `make` installed on your Linux machine.
+2. Navigate to the project directory containing the Makefile and source files.
+3. Run the following command in the terminal to compile the project:
 
-        Total qty matching for security ids:
-       SecId1 900
-            SecId2 600
-            SecId3 0
+   <pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>shell</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-shell">make
+   </code></div></div></pre>
+4. After successful compilation, execute the unit tests by running the following command:
 
+   <pre><div class="bg-black rounded-md mb-4"><div class="flex items-center relative text-gray-200 bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md"><span>shell</span><button class="flex ml-auto gap-2"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>Copy code</button></div><div class="p-4 overflow-y-auto"><code class="!whitespace-pre hljs language-shell">./unittest
+   </code></div></div></pre>
 
+   The unit tests cover various scenarios and ensure the correctness of the implemented methods.
+
+### Solution Approach
+
+* **Greedy Approach for getMatchingSizeForSecurity** : The `getMatchingSizeForSecurity` method is implemented using a greedy approach. It calculates and returns the total quantity that can be matched for a given security ID.
+* **Performance and Memory Considerations** : The implementation prioritizes performance over memory consumption. To optimize execution speed, several buffers with different data structures are used to store the same data but in different ways. These buffers are managed and synchronized by their respective manager classes.
+
+### Unit Testing Approach
+
+* **Pure C++ Unit Tests** : The unit tests were implemented without using any external test framework. This approach simplifies compilation and integration with different operating systems. Moreover, it demonstrates the knowledge of pure C++ and reduces dependencies.
+* **Coverage of Scenarios** : The unit tests cover both best and worst case scenarios, ensuring the correctness and robustness of the implemented methods.
