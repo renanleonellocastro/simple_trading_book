@@ -265,3 +265,59 @@ void OrderCacheImpTest::testGetMatchingSizeForSecurityExample10()
 
     std::cout << "testGetMatchingSizeForSecurityExample10: Passed" << std::endl;
 }
+
+void OrderCacheImpTest::testGetMatchingSizeForSecurityExample11()
+{
+    OrderCacheImp orderCache;
+
+    for (int i = 1; i <= 10000; ++i) {
+        orderCache.addOrder(Order("OrdIdBuy" + std::to_string(i), "SecId1", "Buy", i, "User1",
+            "Company" + std::to_string(i)));
+        orderCache.addOrder(Order("OrdIdSell" + std::to_string(i), "SecId1", "Sell", i, "User1",
+            "Company" + std::to_string(i)));
+    }
+
+    orderCache.cancelOrdersForSecIdWithMinimumQty("SecId1", 5001);
+
+    assert(orderCache.getMatchingSizeForSecurity("SecId1") == 12502500);
+
+    std::cout << "testGetMatchingSizeForSecurityExample11: Passed" << std::endl;
+}
+
+void OrderCacheImpTest::testGetMatchingSizeForSecurityExample12()
+{
+    OrderCacheImp orderCache;
+
+    for (int i = 1; i <= 10000; ++i) {
+        orderCache.addOrder(Order("OrdIdBuy" + std::to_string(i), "SecId1", "Buy", i, "User1",
+            "Company" + std::to_string(i)));
+        orderCache.addOrder(Order("OrdIdSell" + std::to_string(i), "SecId1", "Sell", i, "User1",
+            "Company" + std::to_string(i)));
+    }
+
+    for (int i = 1; i < 5000; ++i) {
+        orderCache.cancelOrder("OrdIdBuy" + std::to_string(i));
+    }
+
+    assert(orderCache.getMatchingSizeForSecurity("SecId1") == 37507500);
+
+    std::cout << "testGetMatchingSizeForSecurityExample12: Passed" << std::endl;
+}
+
+void OrderCacheImpTest::testGetMatchingSizeForSecurityExample13()
+{
+    OrderCacheImp orderCache;
+
+    for (int i = 1; i <= 10000; ++i) {
+        orderCache.addOrder(Order("OrdIdBuy" + std::to_string(i), "SecId1", "Buy", i, "User1",
+            "Company" + std::to_string(i)));
+        orderCache.addOrder(Order("OrdIdSell" + std::to_string(i), "SecId1", "Sell", i, "User2",
+            "Company" + std::to_string(i)));
+    }
+
+    orderCache.cancelOrdersForUser("User1");
+
+    assert(orderCache.getMatchingSizeForSecurity("SecId1") == 0);
+
+    std::cout << "testGetMatchingSizeForSecurityExample13: Passed" << std::endl;
+}
