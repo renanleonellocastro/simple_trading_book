@@ -18,7 +18,7 @@ void OrderCacheImp::addOrder(Order order)
 
     try {
         m_qtyByCompanyBySecIdManager.addOrder(order);
-    } catch (std::runtime_error e) {
+    } catch (std::runtime_error& e) {
         m_orderCacheManager.cancelOrder(order.orderId());
         m_ordersByUserManager.cancelOrder(order);
         m_orderQtyByOrderIdBySecIdManager.cancelOrder(order);
