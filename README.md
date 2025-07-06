@@ -1,5 +1,7 @@
 # Trade Book - In-Memory Order Cache
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=renanleonellocastro_simple_trading_book&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=renanleonellocastro_simple_trading_book)
+
 This project is an implementation of an in-memory trade book that manages orders and provides various operations on the orders. It includes a class called `OrderCacheImp` that implements the `OrderCacheInterface`, which defines the interface for interacting with the order cache.
 
 ## OrderCacheInterface
