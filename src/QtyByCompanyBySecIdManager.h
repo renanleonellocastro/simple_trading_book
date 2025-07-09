@@ -1,5 +1,6 @@
 #include <map>
 #include <set>
+#include <cstdint>
 #include <unordered_map>
 
 #include "OrderCache.h"
